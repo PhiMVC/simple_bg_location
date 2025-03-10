@@ -1,0 +1,80 @@
+group 'com.royzed.simple_bg_location'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    ext.room_version = '2.5.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+afterEvaluate { project ->
+    if (project.hasProperty('android')) {
+        project.android {
+            if (namespace == null) {
+                namespace project.group
+                }
+            }
+        }
+    }
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+    }
+}
+
+dependencies {
+    def activity_version = "1.6.1"
+    def fragment_version = "1.5.5"
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.activity:activity-ktx:$activity_version"
+    // androidx.fragment and android.activity must implementation together
+    // otherwise in androidx.activity.result.ActivityResultCallback will throw exception
+    // said can only use 16 bits for requestCode
+    // https://stackoverflow.com/questions/25529865/java-lang-illegalargumentexception-can-only-use-lower-16-bits-for-requestcode
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.google.android.material:material:1.9.0-alpha02'
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
+}
