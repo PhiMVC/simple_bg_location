@@ -37,6 +37,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 33
+    namespace "com.royzed.simple_bg_location" 
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
